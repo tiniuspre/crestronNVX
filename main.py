@@ -6,6 +6,8 @@ config = load(open('config.json'))
 
 id = 0
 agent_valg = "CB6"
+crestron_brukernavn = "admin"
+crestron_passord = "admin"
 
 
 def getCrestron():
@@ -16,8 +18,12 @@ def getCrestron():
 
     enheter = {}
     for enhet in domotz.devices():
-        if enhet['vendor'] == 'CRESTRON ELECTRONICS, INC.':
+        if enhet['vendor'] == 'CRESTRON ELECTRONICS, INC.' and enhet['status'] == 'ONLINE':
             enheter.update({enhet['id']: {'ip': enhet['ip_addresses'][0], 'navn': enhet['names']['host'], 'id': enhet['id'],
                              'model': enhet['model']}})
 
     return enheter
+
+for enhet in getCrestron().values():
+    crestron = EasyCrestron(ip=enhet['ip'], brukernavn=crestron_brukernavn, passord=crestron_passord)
+    print(f'ID: {enhet["id"]} | Model: {crestron.EnhetInfo()["Model"]} | Firmware: {crestron.FirmwareInfo()}')
