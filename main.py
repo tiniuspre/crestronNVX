@@ -1,5 +1,5 @@
-from crestron_pakke import *
-from domotz_pakke import *
+from pakker.crestron import *
+from pakker.domotz import *
 from json import load
 
 config = load(open('config.json'))
